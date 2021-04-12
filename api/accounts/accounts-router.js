@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Account = require('./accounts-model');
-const { errorHandler } = require('./accounts-middleware');
+const { errorHandler, checkAccountPayload } = require('./accounts-middleware');
 
 router.get('/', async (req, res, next) => {
 	try {
@@ -20,7 +20,7 @@ router.get('/:id', async (req, res, next) => {
 	}
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkAccountPayload, async (req, res, next) => {
 	try {
 		const newAccount = await Account.create(req.body);
 		res.status(201).json(newAccount);
@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', checkAccountPayload, async (req, res, next) => {
 	try {
 		const updatedAccount = await Account.updateById(req.params.id, req.body);
 		res.status(201).json(updatedAccount);
