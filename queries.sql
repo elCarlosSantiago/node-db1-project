@@ -26,7 +26,7 @@ UPDATE customers
 SET postalcode = 11122
 WHERE customerid = 92;
 -- (Stretch) Find a query to discover how many different cities are stored in the Customers table. Repeats should not be double counted
--- The code below produces a table with 70 records (cities) and a column counting how many times that city appears in the data set
+-- The code below produces a table with 70 records _cities_ (after adding the shire) and a column counting how many times that city appears in the data set
 SELECT distinct city, COUNT( city) AS Count
 from customers
 GROUP BY city;
