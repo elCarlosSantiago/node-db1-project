@@ -8,11 +8,17 @@ exports.checkAccountPayload = (req, res, next) => {
 		} else if (typeof name !== 'string') {
 			next({ message: 'name of account must be a string', status: 400 });
 		} else if (name.trim().length < 3 || name.trim().length > 100) {
-			next({ message: 'name of account must be between 3 and 100', status: 400 });
+			next({
+				message: 'name of account must be between 3 and 100',
+				status: 400,
+			});
 		} else if (typeof budget !== 'number') {
 			next({ message: 'must be a number', status: 400 });
 		} else if (budget < 0 || budget > 1000000) {
-			next({ message: 'budget of account is too large or too small', status: 400 });
+			next({
+				message: 'budget of account is too large or too small',
+				status: 400,
+			});
 		} else {
 			next();
 		}
