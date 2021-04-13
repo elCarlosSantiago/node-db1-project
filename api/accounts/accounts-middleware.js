@@ -3,7 +3,7 @@ const Accounts = require('./accounts-model');
 exports.checkAccountPayload = (req, res, next) => {
 	const { name, budget } = req.body;
 	try {
-		if (!name || !budget) {
+		if (name === undefined || budget === undefined) {
 			next({ message: 'name and budget are required', status: 400 });
 		} else if (typeof name !== 'string') {
 			next({ message: 'name of account must be a string', status: 400 });
@@ -14,7 +14,6 @@ exports.checkAccountPayload = (req, res, next) => {
 		} else if (budget < 0 || budget > 1000000) {
 			next({ message: 'budget of account is too large or too small', status: 400 });
 		} else {
-			req.account = req.body;
 			next();
 		}
 	} catch (err) {
@@ -23,11 +22,16 @@ exports.checkAccountPayload = (req, res, next) => {
 };
 
 exports.checkAccountNameUnique = async (req, res, next) => {
-	// try{
-	//   if
-	// } catch(err) {
-	//   next(err)
-	// }
+	try {
+		const account = await Accounts.getByName(req.body.name);
+		if (!account) {
+			next();
+		} else {
+			next({ message: 'that name is taken', status: 400 });
+		}
+	} catch (err) {
+		next(err);
+	}
 };
 
 exports.checkAccountId = async (req, res, next) => {
@@ -39,8 +43,8 @@ exports.checkAccountId = async (req, res, next) => {
 			next({ message: 'account not found', status: 404 });
 		}
 	} catch (err) {
-    next(err)
-  }
+		next(err);
+	}
 };
 
 //eslint-disable-next-line
