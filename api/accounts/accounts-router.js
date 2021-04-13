@@ -25,37 +25,27 @@ router.get('/:id', checkAccountId, async (req, res, next) => {
   }
 });
 
-router.post(
-  '/',
-  checkAccountPayload,
-  checkAccountNameUnique,
-  async (req, res, next) => {
-    const contents = {
-      name: req.body.name.trim(),
-      budget: req.body.budget,
-    };
-    try {
-      const newAccount = await Account.create(contents);
-      res.status(201).json(newAccount);
-    } catch (err) {
-      next(err);
-    }
+router.post('/', checkAccountPayload, checkAccountNameUnique, async (req, res, next) => {
+  const contents = {
+    name: req.body.name.trim(),
+    budget: req.body.budget,
+  };
+  try {
+    const newAccount = await Account.create(contents);
+    res.status(201).json(newAccount);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
-router.put(
-  '/:id',
-  checkAccountId,
-  checkAccountPayload,
-  async (req, res, next) => {
-    try {
-      const updatedAccount = await Account.updateById(req.params.id, req.body);
-      res.json(updatedAccount);
-    } catch (err) {
-      next(err);
-    }
+router.put('/:id', checkAccountId, checkAccountPayload, async (req, res, next) => {
+  try {
+    const updatedAccount = await Account.updateById(req.params.id, req.body);
+    res.json(updatedAccount);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 router.delete('/:id', checkAccountId, async (req, res, next) => {
   try {
